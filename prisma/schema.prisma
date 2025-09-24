@@ -24,6 +24,7 @@ model Listing {
   owner           User     @relation(fields: [ownerId], references: [id])
   ownerId         String
 
+  // What the user HAS
   fifaMatchId     String
   city            String
   stadium         String
@@ -32,7 +33,9 @@ model Listing {
   faceValueCents  Int
   packageType     String?
 
-  intent          Intent?
+  // 1:1 link to the user's WANT (Intent)
+  intentId        String?   @unique
+  intent          Intent?   @relation(fields: [intentId], references: [id])
 
   offersFrom      Offer[] @relation("FromListing")
   offersTo        Offer[] @relation("ToListing")
@@ -53,6 +56,7 @@ model Intent {
   desiredCategory    String?
   priceDeltaCapCents Int?
 
+  // Back-reference of the 1:1; no fields[] here
   listing            Listing?
 }
 
