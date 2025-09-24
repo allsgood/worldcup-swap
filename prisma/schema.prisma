@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  anonId    String   @unique
+  listings  Listing[]
+  intents   Intent[]
+  offers    Offer[]   @relation("OfferFromUser")
+  matches   Offer[]   @relation("OfferToUser")
+}
+
+model Listing {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  status          ListingStatus @default(active)
+  owner           User     @relation(fields: [ownerId], references: [id])
+  ownerId         String
+
+  fifaMatchId     String
+  city            String
+  stadium         String
+  date            DateTime
+  category        String
+  faceValueCents  Int
+  packageType     String?
+
+  intent          Intent?
+
+  offersFrom      Offer[] @relation("FromListing")
+  offersTo        Offer[] @relation("ToListing")
+
+  featured        Boolean  @default(false)
+}
+
+model Intent {
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  user               User     @relation(fields: [userId], references: [id])
+  userId             String
+
+  desiredTeam        String?
+  desiredCity        String?
+  dateFrom           DateTime?
+  dateTo             DateTime?
+  desiredCategory    String?
+  priceDeltaCapCents Int?
+
+  listing            Listing?
+}
+
+model Offer {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  status        OfferStatus @default(open)
+  type          OfferType   @default(direct)
+  expiresAt     DateTime?
+
+  fromListing   Listing @relation("FromListing", fields: [fromListingId], references: [id])
+  fromListingId String
+  toListing     Listing @relation("ToListing", fields: [toListingId], references: [id])
+  toListingId   String
+
+  cashDeltaCents Int @default(0)
+
+  fromUser      User   @relation("OfferFromUser", fields: [fromUserId], references: [id])
+  fromUserId    String
+  toUser        User   @relation("OfferToUser", fields: [toUserId], references: [id])
+  toUserId      String
+
+  acceptedByFrom Boolean  @default(false)
+  acceptedByTo   Boolean  @default(false)
+  feePaid        Boolean  @default(false)
+  stripeCheckoutSessionId String?
+
+  fromConfirmationRef String?
+  toConfirmationRef   String?
+  completedAt         DateTime?
+}
+
+enum ListingStatus {
+  active
+  pending
+  completed
+  expired
+}
+
+enum OfferStatus {
+  open
+  accepted
+  cancelled
+  expired
+}
+
+enum OfferType {
+  direct
+  cycle
+}
