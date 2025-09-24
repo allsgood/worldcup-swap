@@ -1,8 +1,0 @@
-{
-  "functions": {
-    "src/**": {
-      "maxDuration": 10
-    }
-  },
-  "buildCommand": "npm run build && npm run migrate:deploy"
-}
