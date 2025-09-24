@@ -12,6 +12,10 @@
     "jsx": "preserve",
     "noEmit": true,
     "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "plugins": [{ "name": "next" }]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
