@@ -67,20 +67,20 @@ export async function createListing(formData: FormData) {
     }
   });
 
-  const listing = await prisma.listing.create({
-    data: {
-      ownerId: user.id,
-      fifaMatchId: v.fifaMatchId,
-      city: v.city,
-      stadium: v.stadium,
-      date: v.date,
-      category: v.category,
-      faceValueCents: v.faceValueCents,
-      packageType: v.packageType,
-      intent: { connect: { id: intent.id } }
-    },
-    include: { intent: true }
-  });
+const listing = await prisma.listing.create({
+  data: {
+    owner: { connect: { id: user.id } },   // ✅ connect the relation instead of ownerId
+    fifaMatchId: v.fifaMatchId,
+    city: v.city,
+    stadium: v.stadium,
+    date: v.date,
+    category: v.category,
+    faceValueCents: v.faceValueCents,
+    packageType: v.packageType,
+    intent: { connect: { id: intent.id } } // already correct
+  },
+  include: { intent: true }
+});
 
   // Run simple direct matching against other active listings
   const others = await prisma.listing.findMany({
