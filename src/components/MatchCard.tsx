@@ -2,7 +2,7 @@
 
 import { Offer, Listing } from "@prisma/client";
 import { useTransition, useState } from "react";
-import { acceptOffer, declineOffer } from "@/src/actions/offerActions";
+import { acceptOffer, declineOffer } from "@/actions/offerActions";
 
 type OfferWithListings = Offer & { fromListing: Listing; toListing: Listing };
 
