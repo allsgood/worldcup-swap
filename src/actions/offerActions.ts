@@ -8,7 +8,7 @@ const FEE_CENTS = parseInt(process.env.MATCHMAKING_FEE_CENTS || "299", 10);
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export async function acceptOffer(offerId: string) {
-  const user = await ensureAnonUserWithCookie;
+ const user = await ensureAnonUserWithCookie();
   const offer = await prisma.offer.findUnique({
     where: { id: offerId },
     include: { fromListing: true, toListing: true }
@@ -56,7 +56,7 @@ export async function acceptOffer(offerId: string) {
 }
 
 export async function declineOffer(offerId: string) {
-  const user = await getOrCreateAnonUser();
+  const user = await ensureAnonUserWithCookie();
   const offer = await prisma.offer.findUnique({ where: { id: offerId } });
   if (!offer || offer.status !== "open") return { ok: false, error: "Offer not found" };
   if (offer.fromUserId !== user.id && offer.toUserId !== user.id) return { ok: false, error: "Forbidden" };
