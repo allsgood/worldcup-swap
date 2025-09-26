@@ -1,6 +1,6 @@
-import { prisma } from "@/src/lib/db";
-import { getOrCreateAnonUser } from "@/src/lib/session";
-import MatchCard from "@/src/components/MatchCard";
+import { prisma } from "@/lib/db";
+import { getOrCreateAnonUser } from "@/lib/session";
+import MatchCard from "@/components/MatchCard";
 
 export default async function MatchesPage() {
   const user = await getOrCreateAnonUser();
