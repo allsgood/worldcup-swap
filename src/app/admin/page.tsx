@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { prisma } from "@/src/lib/db";
+import { prisma } from "@/lib/db";
 
 export default async function AdminHome() {
   const isAuthed = cookies().get("admin_auth")?.value === "1";
