@@ -1,10 +1,10 @@
 "use server";
 
 import { prisma } from "@/lib/db";
-import { getOrCreateAnonUser } from "@/lib/session";
+import { ensureAnonUserWithCookie } from "@/lib/session";
 
 export async function submitConfirmation(offerId: string, ref: string) {
-  const user = await getOrCreateAnonUser();
+  const user = await ensureAnonUserWithCookie(); // OK to set cookie here
   const offer = await prisma.offer.findUnique({ where: { id: offerId } });
   if (!offer) return { ok: false, error: "Offer not found" };
   if (offer.status !== "accepted" && !offer.feePaid) {
