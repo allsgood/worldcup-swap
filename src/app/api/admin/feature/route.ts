@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/src/lib/db";
+import { prisma } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   const admin = req.cookies.get("admin_auth")?.value === "1";
