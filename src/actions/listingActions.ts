@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { getOrCreateAnonUser } from "@/lib/session";
+import { ensureAnonUserWithCookie } from "@/lib/session";
 import { addDays, isAfter, isBefore } from "date-fns";
 
 const ListingSchema = z.object({
@@ -46,7 +46,7 @@ function wantMatchesHave(
 }
 
 export async function createListing(formData: FormData) {
-  const user = await getOrCreateAnonUser();
+  const user = await ensureAnonUserWithCookie();  // OK to set cookie here
 
   const parsed = ListingSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!parsed.success) {
