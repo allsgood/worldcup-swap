@@ -1,5 +1,5 @@
-import ListingForm from "@/src/components/ListingForm";
-import { createListing } from "@/src/actions/listingActions";
+import ListingForm from "@/components/ListingForm";
+import { createListing } from "@/actions/listingActions";
 
 export default function Home() {
   return (
