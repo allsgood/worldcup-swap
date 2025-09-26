@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { submitConfirmation } from "@/src/actions/confirmationActions";
+import { submitConfirmation } from "@/actions/confirmationActions";
 
 export default function ConfirmationForm({ offerId, existingRef }: { offerId: string; existingRef: string }) {
   const [ref, setRef] = useState(existingRef);
