@@ -1,7 +1,7 @@
 "use server";
 
-import { prisma } from "@/src/lib/db";
-import { getOrCreateAnonUser } from "@/src/lib/session";
+import { prisma } from "@/lib/db";
+import { getOrCreateAnonUser } from "@/lib/session";
 
 export async function submitConfirmation(offerId: string, ref: string) {
   const user = await getOrCreateAnonUser();
