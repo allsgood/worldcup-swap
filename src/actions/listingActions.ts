@@ -69,7 +69,7 @@ export async function createListing(formData: FormData) {
 
 const listing = await prisma.listing.create({
   data: {
-    owner: { connect: { id: user.id } },   // ✅ connect the relation instead of ownerId
+    owner: { connect: { id: user.id } },   // ✅ not ownerId
     fifaMatchId: v.fifaMatchId,
     city: v.city,
     stadium: v.stadium,
@@ -77,7 +77,7 @@ const listing = await prisma.listing.create({
     category: v.category,
     faceValueCents: v.faceValueCents,
     packageType: v.packageType,
-    intent: { connect: { id: intent.id } } // already correct
+    intent: { connect: { id: intent.id } }
   },
   include: { intent: true }
 });
