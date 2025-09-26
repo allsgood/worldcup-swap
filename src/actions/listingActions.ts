@@ -1,8 +1,8 @@
 "use server";
 
 import { z } from "zod";
-import { prisma } from "@/src/lib/db";
-import { getOrCreateAnonUser } from "@/src/lib/session";
+import { prisma } from "@/lib/db";
+import { getOrCreateAnonUser } from "@/lib/session";
 import { addDays, isAfter, isBefore } from "date-fns";
 
 const ListingSchema = z.object({
