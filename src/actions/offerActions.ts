@@ -1,8 +1,8 @@
 "use server";
 
-import { prisma } from "@/src/lib/db";
-import { getOrCreateAnonUser } from "@/src/lib/session";
-import { stripe } from "@/src/lib/stripe";
+import { prisma } from "@/lib/db";
+import { getOrCreateAnonUser } from "@/lib/session";
+import { stripe } from "@/lib/stripe";
 
 const FEE_CENTS = parseInt(process.env.MATCHMAKING_FEE_CENTS || "299", 10);
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
