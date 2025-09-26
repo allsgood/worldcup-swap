@@ -1,14 +1,14 @@
 "use server";
 
 import { prisma } from "@/lib/db";
-import { ensureAnonUserWithCookie() } from "@/lib/session";
+import { ensureAnonUserWithCookie } from "@/lib/session";
 import { stripe } from "@/lib/stripe";
 
 const FEE_CENTS = parseInt(process.env.MATCHMAKING_FEE_CENTS || "299", 10);
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export async function acceptOffer(offerId: string) {
-  const user = await getOrCreateAnonUser();
+  const user = await ensureAnonUserWithCookie;
   const offer = await prisma.offer.findUnique({
     where: { id: offerId },
     include: { fromListing: true, toListing: true }
