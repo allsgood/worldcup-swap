@@ -1,6 +1,6 @@
-import { prisma } from "@/src/lib/db";
-import { getOrCreateAnonUser } from "@/src/lib/session";
-import ConfirmationForm from "@/src/components/ConfirmationForm";
+import { prisma } from "@/lib/db";
+import { getOrCreateAnonUser } from "@/lib/session";
+import ConfirmationForm from "@/components/ConfirmationForm";
 
 export default async function SuccessPage({ searchParams }: { searchParams: { offer?: string } }) {
   const offerId = searchParams.offer;
