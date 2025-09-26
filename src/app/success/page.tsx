@@ -3,26 +3,34 @@ import { findUserFromCookie } from "@/lib/session";
 import ConfirmationForm from "@/components/ConfirmationForm";
 
 export default async function SuccessPage({ searchParams }: { searchParams: { offer?: string } }) {
-  const user = await findUserFromCookie(); // read-only; do not set cookie here
-  if (!user) {
-    return (
-      <section>
-        <h1>Not signed in</h1>
-        <p>We couldn’t find your session. Please create a listing on the homepage, then return to your success link.</p>
-        <a href="/">Go to Create Listing →</a>
-      </section>
-    );
-  }
+  const offerId = searchParams?.offer;
+
   if (!offerId) {
     return (
       <section>
         <h1>Payment successful</h1>
-        <p>We couldn’t find an offer ID in the URL, but your payment was received. Check <a href="/matches">Your Matches</a>.</p>
+        <p>
+          We couldn’t find an offer ID in the URL, but your payment was received. Check{" "}
+          <a href="/matches">Your Matches</a>.
+        </p>
       </section>
     );
   }
 
-  const user = await getOrCreateAnonUser();
+  // READ-ONLY during page render (do NOT set cookies here)
+  const user = await findUserFromCookie();
+  if (!user) {
+    return (
+      <section>
+        <h1>Session not found</h1>
+        <p>
+          Please create a listing on the homepage first, then return here.{" "}
+          <a href="/">Create a listing →</a>
+        </p>
+      </section>
+    );
+  }
+
   const offer = await prisma.offer.findUnique({
     where: { id: offerId },
     include: { fromListing: true, toListing: true }
@@ -37,10 +45,10 @@ export default async function SuccessPage({ searchParams }: { searchParams: { of
     );
   }
 
-  const youGive   = offer.fromUserId === user.id ? offer.fromListing : offer.toListing;
-  const youGet    = offer.fromUserId === user.id ? offer.toListing   : offer.fromListing;
-  const yourRef   = offer.fromUserId === user.id ? offer.fromConfirmationRef : offer.toConfirmationRef;
-  const partnerRef= offer.fromUserId === user.id ? offer.toConfirmationRef   : offer.fromConfirmationRef;
+  const youGive = offer.fromUserId === user.id ? offer.fromListing : offer.toListing;
+  const youGet  = offer.fromUserId === user.id ? offer.toListing   : offer.fromListing;
+  const yourRef    = offer.fromUserId === user.id ? offer.fromConfirmationRef : offer.toConfirmationRef;
+  const partnerRef = offer.fromUserId === user.id ? offer.toConfirmationRef   : offer.fromConfirmationRef;
 
   return (
     <section>
