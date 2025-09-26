@@ -1,9 +1,18 @@
 import { prisma } from "@/lib/db";
-import { getOrCreateAnonUser } from "@/lib/session";
+import { findUserFromCookie } from "@/lib/session";
 import ConfirmationForm from "@/components/ConfirmationForm";
 
 export default async function SuccessPage({ searchParams }: { searchParams: { offer?: string } }) {
-  const offerId = searchParams.offer;
+  const user = await findUserFromCookie(); // read-only; do not set cookie here
+  if (!user) {
+    return (
+      <section>
+        <h1>Not signed in</h1>
+        <p>We couldn’t find your session. Please create a listing on the homepage, then return to your success link.</p>
+        <a href="/">Go to Create Listing →</a>
+      </section>
+    );
+  }
   if (!offerId) {
     return (
       <section>
