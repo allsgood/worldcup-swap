@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/db";
-import { findUserFromCookie() } from "@/lib/session";
+import { ensureAnonUserWithCookie() } from "@/lib/session";
 import { stripe } from "@/lib/stripe";
 
 const FEE_CENTS = parseInt(process.env.MATCHMAKING_FEE_CENTS || "299", 10);
