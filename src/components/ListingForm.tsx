@@ -11,10 +11,16 @@ export default function ListingForm({ action }: Props) {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitting(true);
+    setResult(null);
     const fd = new FormData(e.currentTarget);
-    const res = await action(fd);
-    setResult(res);
-    setSubmitting(false);
+    try {
+      const res = await action(fd);
+      setResult(res);
+    } catch (err: any) {
+      setResult({ ok: false, error: { message: err?.message || String(err) } });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
